@@ -8,7 +8,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 // DONNÉES ÉQUIPE
-// Note: Ici, on utilise des apostrophes normales car c'est une variable String JS.
 const team = [
   {
     name: "ALEX MAZOUZ",
@@ -34,30 +33,41 @@ const team = [
 const values = [
   {
     icon: Crosshair,
-    title: "PRÉCISION OBSESSIONNELLE",
-    desc: "Le diable est dans les détails ? Non, la réussite y est. Nous alignons chaque pixel, typons chaque variable. Le code est notre art, la perfection notre standard minimal."
+    title: "EXCELLENCE OPÉRATIONNELLE",
+    desc: "Nous ne tolérons pas l'approximation. Chaque projet est soumis à des tests rigoureux et une revue de code stricte. Notre standard de qualité dépasse les normes du marché."
   },
   {
     icon: Cpu,
-    title: "INTELLIGENCE EMBARQUÉE",
-    desc: "Nous ne livrons pas des coquilles vides. Nous injectons de l'IA et de l'automatisation au cœur de vos produits pour qu'ils travaillent pour vous, même quand vous dormez."
+    title: "AVANT-GARDE TECHNOLOGIQUE",
+    desc: "Nous n'attendons pas le futur, nous le codons. IA générative, Web3, Edge Computing : nous intégrons dès aujourd'hui les technologies qui seront la norme demain."
   },
   {
     icon: Fingerprint,
-    title: "DIFFÉRENCIATION RADICALE",
-    desc: "Le mimétisme est la mort de l'innovation. Nous refusons les templates. Nous créons des identités visuelles et techniques qui rendent votre marque impossible à ignorer."
+    title: "APPROCHE SUR-MESURE",
+    desc: "Votre entreprise est unique, votre solution doit l'être aussi. Nous refusons l'industrialisation de masse pour privilégier l'artisanat numérique de haute précision."
   }
 ];
 
-// DONNÉES CHRONOLOGIE (DATA LOGS)
+// DONNÉES CHRONOLOGIE
 const history = [
-  { year: "2020", title: "SYSTEM BOOT", desc: "Initialisation du noyau. Une vision : créer l'agence que nous aurions voulu engager." },
-  { year: "2022", title: "FIRST IMPACT", desc: "Déploiement majeur pour une Fintech US. Le marché remarque notre signature visuelle." },
-  { year: "2024", title: "GLOBAL SCALE", desc: "Ouverture des opérations internationales. 50+ projets livrés sans aucune dette technique." },
-  { year: "2025", title: "SINGULARITY", desc: "Intégration native de l'IA dans tous nos workflows. Nous ne codons plus, nous générons le futur." }
+  { 
+    year: "2023", 
+    title: "INITIALISATION DU NOYAU", 
+    desc: "Fondation de Mazouz Web Solutions. Une ambition claire : briser le statu quo des agences digitales en proposant une ingénierie de niveau Silicon Valley au Maroc." 
+  },
+  { 
+    year: "2024", 
+    title: "HYPERCROISSANCE", 
+    desc: "Validation du modèle. Déploiement de solutions critiques pour des acteurs majeurs et structuration d'une équipe d'élite. L'agence s'impose par sa rapidité d'exécution." 
+  },
+  { 
+    year: "2025", 
+    title: "EXPANSION GLOBALE", 
+    desc: "Ouverture aux marchés internationaux. Intégration native de l'Intelligence Artificielle dans 100% de nos workflows de production. Nous ne suivons plus les tendances, nous les créons." 
+  }
 ];
 
-// DONNÉES STACK (WEAPONRY)
+// DONNÉES STACK
 const stack = ["NEXT.JS", "REACT NATIVE", "TYPESCRIPT", "PYTHON", "RUST", "SUPABASE", "AWS", "WEBGL", "SOLIDITY"];
 
 export default function AgencePage() {
@@ -83,27 +93,31 @@ export default function AgencePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 mb-32 items-center">
             <div className="space-y-8 md:text-lg text-gray-300 font-light leading-relaxed">
                 <div>
-                    <h3 className="text-white font-bold text-xl mb-2 flex items-center gap-2">
-                        <span className="text-cyan-500">01.</span> LA GENÈSE
-                    </h3>
+                    <HorizontalParallax direction={-1} speed={20}>
+                        <h3 className="text-white font-bold text-xl mb-2 flex items-center gap-2">
+                            <span className="text-cyan-500">01.</span> NOTRE PHILOSOPHIE
+                        </h3>
+                    </HorizontalParallax>
                     <p>
-                        Le web est devenu bruyant. Saturé. Médiocre. <strong className="text-white">MazouzWS</strong> est née d&apos;un constat simple : la plupart des agences vendent de la technologie comme on vend des pommes de terre au kilo. Nous, nous vendons de la <span className="text-white border-b border-cyan-500/50">domination digitale</span>.
+                        Dans un écosystème numérique saturé de solutions génériques, <strong className="text-white">MazouzWS</strong> se positionne comme le partenaire stratégique des entreprises visionnaires. Nous ne sommes pas de simples exécutants ; nous sommes les architectes de votre infrastructure digitale future.
                     </p>
                 </div>
                 
                 <div>
-                    <h3 className="text-white font-bold text-xl mb-2 flex items-center gap-2">
-                        <span className="text-cyan-500">02.</span> LA MISSION
-                    </h3>
+                    <HorizontalParallax direction={1} speed={20}>
+                        <h3 className="text-white font-bold text-xl mb-2 flex items-center gap-2">
+                            <span className="text-cyan-500">02.</span> NOTRE PROMESSE
+                        </h3>
+                    </HorizontalParallax>
                     <p>
-                        Nous sommes un collectif d&apos;ingénieurs d&apos;élite et de designers futuristes. Notre but n&apos;est pas de &quot;faire un site&quot;, mais de construire votre <strong className="text-white">Quartier Général Numérique</strong>. Une forteresse scalable, rapide et magnifique, conçue pour écraser la concurrence.
+                        Allier la puissance brute du code à l&apos;élégance du design. Nous concevons des écosystèmes digitaux qui sont non seulement performants et sécurisés, mais qui offrent une expérience utilisateur (UX) inoubliable. Votre succès digital est notre seule métrique de réussite.
                     </p>
                 </div>
 
                 <div className="pt-4">
                     <div className="inline-flex items-center gap-4 px-6 py-3 border border-cyan-500/30 bg-cyan-500/5 rounded-full backdrop-blur-md">
                         <Trophy className="text-cyan-400" size={20} />
-                        <span className="text-xs md:text-sm font-bold tracking-widest text-cyan-100">AWARDS WINNING MINDSET</span>
+                        <span className="text-xs md:text-sm font-bold tracking-widest text-cyan-100">EXCELLENCE CERTIFIÉE</span>
                     </div>
                 </div>
             </div>
@@ -129,12 +143,15 @@ export default function AgencePage() {
             </div>
         </div>
 
-        {/* NOUVELLE SECTION : DATA LOGS (CHRONOLOGIE) */}
+        {/* DATA LOGS */}
         <div className="mb-32">
-            <h3 className="text-2xl md:text-4xl font-black text-white mb-16 text-center flex items-center justify-center gap-3">
-                <Terminal size={32} className="text-cyan-500" />
-                DATA LOGS
-            </h3>
+            <HorizontalParallax direction={1} speed={40}>
+                <h3 className="text-2xl md:text-4xl font-black text-white mb-16 text-center flex items-center justify-center gap-3">
+                    <Terminal size={32} className="text-cyan-500" />
+                    DATA LOGS
+                </h3>
+            </HorizontalParallax>
+            
             <div className="relative border-l border-white/10 ml-4 md:ml-1/2 space-y-12">
                 {history.map((log, idx) => (
                     <div key={idx} className="relative pl-8 md:pl-12">
@@ -153,7 +170,7 @@ export default function AgencePage() {
 
         {/* VALEURS (ADN) */}
         <div className="mb-32">
-            <HorizontalParallax direction={1} speed={30}>
+            <HorizontalParallax direction={-1} speed={40}>
                 <h3 className="text-2xl md:text-5xl font-black text-white mb-16 text-center">NOTRE <span className="text-gray-500">ADN</span></h3>
             </HorizontalParallax>
             
@@ -177,11 +194,15 @@ export default function AgencePage() {
             </div>
         </div>
 
-        {/* NOUVELLE SECTION : TECH ARSENAL */}
+        {/* TECH ARSENAL */}
         <div className="mb-32 py-12 border-y border-white/5 bg-white/[0.01]">
             <div className="text-center mb-12">
-                <h3 className="text-sm font-bold tracking-widest text-gray-500 mb-2">INFRASTRUCTURE</h3>
-                <p className="text-3xl font-black text-white">WEAPONRY</p>
+                <HorizontalParallax direction={1} speed={20}>
+                    <h3 className="text-sm font-bold tracking-widest text-gray-500 mb-2">INFRASTRUCTURE</h3>
+                </HorizontalParallax>
+                <HorizontalParallax direction={-1} speed={30}>
+                    <p className="text-3xl font-black text-white">WEAPONRY</p>
+                </HorizontalParallax>
             </div>
             <div className="flex flex-wrap justify-center gap-4 px-4">
                 {stack.map((tech, idx) => (
@@ -195,10 +216,12 @@ export default function AgencePage() {
         {/* ÉQUIPE (OPERATORS) */}
         <div className="mb-32">
             <div className="text-center mb-16">
-                <h3 className="text-2xl md:text-4xl font-black text-white mb-4 flex items-center justify-center gap-4">
-                    <Users size={32} className="text-cyan-500" />
-                    LES OPÉRATEURS
-                </h3>
+                <HorizontalParallax direction={1} speed={40}>
+                    <h3 className="text-2xl md:text-4xl font-black text-white mb-4 flex items-center justify-center gap-4">
+                        <Users size={32} className="text-cyan-500" />
+                        LES OPÉRATEURS
+                    </h3>
+                </HorizontalParallax>
                 <p className="text-gray-500 text-sm font-mono">UNITÉ D&apos;ÉLITE // ACCÈS RESTREINT</p>
             </div>
             
@@ -225,7 +248,6 @@ export default function AgencePage() {
                                 </div>
                             </div>
                             
-                            {/* CORRECTION ICI : Affichage direct de la bio, SANS .replace() */}
                             <p className="text-sm text-gray-400 mb-8 min-h-[80px] font-light leading-relaxed border-l border-white/10 pl-4">
                                 {member.bio}
                             </p>
@@ -244,13 +266,15 @@ export default function AgencePage() {
             </div>
         </div>
 
-        {/* NOUVELLE SECTION : REJOINDRE L'UNITÉ */}
+        {/* CTA FINAL */}
         <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-br from-gray-900 to-black p-12 text-center">
             <div className="absolute top-0 right-0 p-4 opacity-20">
                 <Globe size={200} className="text-cyan-500 animate-spin-slow" />
             </div>
             <div className="relative z-10 max-w-2xl mx-auto">
-                <h3 className="text-3xl font-black text-white mb-6">REJOINDRE L&apos;UNITÉ</h3>
+                <HorizontalParallax direction={-1} speed={30}>
+                    <h3 className="text-3xl font-black text-white mb-6">REJOINDRE L&apos;UNITÉ</h3>
+                </HorizontalParallax>
                 <p className="text-gray-400 mb-8 leading-relaxed">
                     Nous cherchons des anomalies. Des esprits qui ne rentrent pas dans les cases. Si vous pensez que le code est une forme d&apos;art et que l&apos;impossible est juste un challenge non résolu, vous avez votre place.
                 </p>

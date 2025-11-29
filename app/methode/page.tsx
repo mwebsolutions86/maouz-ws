@@ -56,7 +56,7 @@ export default function MethodePage() {
       
       <div className="max-w-5xl mx-auto relative z-10 pb-20">
         
-        {/* HEADER CORRIGÉ POUR MOBILE */}
+        {/* HEADER */}
         <div className="text-center mb-16 md:mb-24">
             <HorizontalParallax direction={1} speed={30}>
                 <h2 className="text-cyan-500 text-[10px] md:text-xs font-bold tracking-[0.3em] md:tracking-[0.5em] mb-4">PROTOCOLE D&apos;EXÉCUTION</h2>
@@ -70,6 +70,11 @@ export default function MethodePage() {
             </HorizontalParallax>
             
             <div className="mt-8 w-16 md:w-24 h-1 bg-gradient-to-r from-cyan-500 to-transparent mx-auto rounded-full" />
+            
+            {/* FIXE : Description stable */}
+            <p className="text-sm md:text-base text-gray-400 max-w-2xl mx-auto mt-8 px-4">
+              Pas de place pour le hasard. Nous appliquons un processus d&apos;ingénierie rigoureux pour garantir le succès.
+            </p>
         </div>
 
         {/* TIMELINE */}
@@ -103,7 +108,7 @@ export default function MethodePage() {
                                     <h3 className="text-xl md:text-3xl font-bold text-white mb-3 md:mb-4">{step.title}</h3>
                                     
                                     <p className="text-gray-400 text-sm md:text-lg leading-relaxed mb-4 md:mb-6">
-                                        {step.description}
+                                        {step.description.replace(/'/g, "&apos;")}
                                     </p>
 
                                     <div className={`space-y-2 ${isEven ? 'md:items-end' : 'md:items-start'} flex flex-col w-full`}>

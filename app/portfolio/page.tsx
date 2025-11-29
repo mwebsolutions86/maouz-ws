@@ -16,7 +16,7 @@ const projects = [
     category: "Mobile App • HealthTech",
     description: "L'application de fitness ultime pilotée par IA. Analyse biométrique en temps réel et coaching adaptatif.",
     tech: ["React Native", "TensorFlow", "Supabase"],
-    image: "/dashboardW.jpeg", 
+    image: "https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&q=80&w=800", 
     link: "#"
   },
   {
@@ -25,7 +25,7 @@ const projects = [
     category: "Drone Control • IoT",
     description: "Interface de pilotage de drones industriels avec retour vidéo latence zéro et télémétrie 3D.",
     tech: ["Electron", "WebSockets", "Three.js"],
-    image: "/dashboardW.jpeg", 
+    image: "https://images.unsplash.com/photo-1506947411487-a56738267384?auto=format&fit=crop&q=80&w=800", 
     link: "#"
   },
   {
@@ -34,7 +34,7 @@ const projects = [
     category: "SaaS • Fintech",
     description: "Dashboard de trading haute fréquence. Visualisation de données boursières complexes en temps réel.",
     tech: ["Next.js", "D3.js", "Go"],
-    image: "/dashboardW.jpeg",
+    image: "https://images.unsplash.com/photo-1611974765270-ca12586343bb?auto=format&fit=crop&q=80&w=800",
     link: "#"
   },
   {
@@ -43,7 +43,7 @@ const projects = [
     category: "E-commerce • Web3",
     description: "Marketplace NFT nouvelle génération. Expérience d'achat immersive et sécurisée par la blockchain.",
     tech: ["Solidity", "Wagmi", "Tailwind"],
-    image: "/dashboardW.jpeg",
+    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=800",
     link: "#"
   }
 ];
@@ -55,7 +55,7 @@ export default function PortfolioPage() {
       
       <div className="max-w-7xl mx-auto relative z-10 pb-20">
         
-        {/* HEADER CORRIGÉ POUR MOBILE */}
+        {/* HEADER */}
         <div className="mb-16 md:mb-24 text-center md:text-left border-b border-white/10 pb-8 md:pb-12">
             <HorizontalParallax direction={-1} speed={20}>
                 <h2 className="text-cyan-500 text-[10px] md:text-xs font-bold tracking-[0.3em] md:tracking-[0.5em] mb-2 md:mb-4">DÉPLOIEMENTS RÉCENTS</h2>
@@ -78,7 +78,6 @@ export default function PortfolioPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                // Correction du commentaire JSX ci-dessous
                 className={`${index % 2 !== 0 ? 'md:mt-24' : ''}`}
              >
                 <Link href={project.link} className="group block relative">
@@ -104,14 +103,17 @@ export default function PortfolioPage() {
                     {/* INFOS PROJET */}
                     <div className="mt-6 md:mt-8 px-2">
                         <div className="flex justify-between items-start mb-2">
-                            <div className="text-cyan-500 font-mono text-[10px] md:text-xs font-bold mb-2 tracking-widest">{project.id} , {project.category}</div>
+                            {/* CORRECTION ICI : {'//'} pour éviter l'erreur de commentaire */}
+                            <div className="text-cyan-500 font-mono text-[10px] md:text-xs font-bold mb-2 tracking-widest">
+                                {project.id} {'//'} {project.category}
+                            </div>
                             <Layers size={18} className="text-gray-600 group-hover:text-white transition-colors" />
                         </div>
                         
                         <h3 className="text-2xl md:text-4xl font-black text-white mb-3 group-hover:text-cyan-400 transition-colors">{project.title}</h3>
                         
                         <p className="text-gray-400 text-sm md:text-base font-light leading-relaxed mb-4 max-w-md">
-                            {project.description.replace(/'/g, "&apos;")}
+                            {project.description}
                         </p>
 
                         <div className="flex flex-wrap gap-2">

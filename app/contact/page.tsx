@@ -13,13 +13,13 @@ export default function ContactPage() {
       
       <div className="max-w-6xl mx-auto relative z-10 pb-20">
         
-        {/* HEADER CORRIGÉ MOBILE */}
+        {/* HEADER */}
         <div className="mb-12 md:mb-20 text-center">
             <HorizontalParallax direction={-1} speed={20}>
                 <h2 className="text-cyan-500 text-[10px] md:text-xs font-bold tracking-[0.3em] md:tracking-[0.5em] mb-4">CANAL SÉCURISÉ</h2>
             </HorizontalParallax>
             
-            <HorizontalParallax direction={1} speed={40}> {/* Vitesse réduite */}
+            <HorizontalParallax direction={1} speed={40}>
                 <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-none flex flex-col md:block items-center justify-center gap-2 md:gap-0">
                     <span>INITIER LE</span>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 md:ml-4">SIGNAL</span>
@@ -29,7 +29,7 @@ export default function ContactPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20">
             
-            {/* COLONNE GAUCHE : FORMULAIRE */}
+            {/* FORMULAIRE */}
             <motion.div 
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -85,7 +85,7 @@ export default function ContactPage() {
                 </form>
             </motion.div>
 
-            {/* COLONNE DROITE : INFOS & CONTEXTE */}
+            {/* INFOS */}
             <motion.div 
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}

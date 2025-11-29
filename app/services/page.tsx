@@ -3,60 +3,138 @@
 import React from 'react';
 import Background3D from '@/app/components/3d/Background3D';
 import { HorizontalParallax } from '@/app/components/ui/Parallax';
-import { Smartphone, Brain, Globe, Layers, Cpu, Zap, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Smartphone, Brain, Globe, Layers, Cpu, Zap, Plus, Scan } from 'lucide-react'; // ArrowRight retiré
+import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
+import Link from 'next/link';
 
-// DONNÉES SERVICES (SEO OPTIMISÉ)
-const services = [
+// DÉFINITION DU TYPE (POUR CORRIGER L'ERREUR "ANY")
+interface ServiceType {
+  id: string;
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  specs: string[];
+}
+
+// DONNÉES SERVICES
+const services: ServiceType[] = [
   {
     id: "01",
     icon: Smartphone,
     title: "MOBILE ENGINEERING",
-    tagline: "React Native • iOS • Android",
-    description: "Nous forgeons des applications natives ultra-performantes. Pas de webviews lentes, mais du vrai code natif. Animations fluides à 60fps, intégration profonde avec le hardware (GPS, Haptique, Caméra) et architecture offline-first.",
-    features: ["Performance Native 60FPS", "Architecture Offline-First", "Animations Gestuelles"]
+    description: "Apps natives React Native 60FPS. Architecture Offline-first. Haptique avancée.",
+    specs: ["iOS & Android", "Biométrie", "Temps Réel"]
   },
   {
     id: "02",
     icon: Brain,
     title: "AI INTEGRATION",
-    tagline: "LLM • Machine Learning • Agents",
-    description: "L'IA n'est plus une option, c'est le moteur. Nous intégrons des modèles LLM (GPT-4, Llama) et des agents autonomes directement dans vos processus. Chatbots contextuels, analyse prédictive de données et automatisation intelligente.",
-    features: ["Agents Autonomes", "RAG (Retrieval Augmented Gen)", "Fine-Tuning de Modèles"]
+    description: "Injection de LLM (GPT-4) et agents autonomes pour automatiser le business.",
+    specs: ["RAG Systems", "Chatbots", "Analyse Data"]
   },
   {
     id: "03",
     icon: Globe,
     title: "IMMERSIVE WEB",
-    tagline: "Three.js • WebGL • Next.js",
-    description: "Le web en 2D est révolu. Nous créons des expériences 3D interactives qui captivent l'attention et augmentent les conversions. Du design primé, optimisé pour ne pas ralentir le navigateur, offrant une expérience marque inoubliable.",
-    features: ["Expériences 3D Temps Réel", "Shaders Custom", "Micro-Interactions"]
+    description: "Expériences 3D WebGL (Three.js) qui convertissent et marquent les esprits.",
+    specs: ["WebGL / 3D", "Shaders", "Performance"]
   },
   {
     id: "04",
     icon: Layers,
     title: "SAAS ARCHITECTURE",
-    tagline: "Cloud • Scalability • Security",
-    description: "Bâtir pour scaler. Nous concevons des backends robustes capables d'encaisser la charge de millions d'utilisateurs. Architecture micro-services ou monolithique modulaire, sécurisée par design (OWASP) et déployée sur le Edge.",
-    features: ["Multi-Tenancy", "API REST & GraphQL", "Sécurité Bancaire"]
+    description: "Backends scalables et sécurisés pour encaisser des millions de requêtes.",
+    specs: ["Cloud Native", "Microservices", "Sécurité"]
   },
   {
     id: "05",
     icon: Cpu,
     title: "IOT & HARDWARE",
-    tagline: "Embedded • Bluetooth • Real-time",
-    description: "Le code rencontre le métal. Nous connectons vos logiciels au monde physique. Protocoles BLE, MQTT, Websockets. Pilotage de drones, domotique, wearables santé. Nous rendons le hardware intelligent et réactif.",
-    features: ["Communication BLE/MQTT", "Traitement de Signal", "Dashboard Temps Réel"]
+    description: "Fusion du code et du métal. Pilotage de drones et objets connectés.",
+    specs: ["Bluetooth", "MQTT", "Embedded"]
   },
   {
     id: "06",
     icon: Zap,
-    title: "PERFORMANCE AUDIT",
-    tagline: "Core Vitals • Speed • SEO",
-    description: "La vitesse est une fonctionnalité. Nous disséquons votre existant. Optimisation des Core Web Vitals, réduction du Time-to-Interactive, SEO technique avancé. Nous transformons les sites lents en éclairs pour le ranking Google.",
-    features: ["Score Lighthouse 100", "Optimisation Serveur", "SEO Technique"]
+    title: "PERFORMANCE",
+    description: "Optimisation radicale. Nous visons le score 100/100 sur Google Lighthouse.",
+    specs: ["SEO Technique", "Core Vitals", "Speed"]
   }
 ];
+
+// COMPOSANT CARTE "SPOTLIGHT"
+// Correction : On utilise le type ServiceType au lieu de "any"
+function SpotlightCard({ service, index }: { service: ServiceType, index: number }) {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      onMouseMove={handleMouseMove}
+      className="group relative w-full h-full bg-black/40 border border-white/10 rounded-3xl overflow-hidden hover:border-white/20 transition-colors"
+    >
+      {/* EFFET DE LUMIÈRE QUI SUIT LA SOURIS */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              650px circle at ${mouseX}px ${mouseY}px,
+              rgba(6, 182, 212, 0.15),
+              transparent 80%
+            )
+          `,
+        }}
+      />
+      
+      {/* CONTENU DE LA CARTE */}
+      <div className="relative h-full p-8 flex flex-col justify-between z-10">
+        
+        {/* En-tête Carte */}
+        <div className="flex justify-between items-start mb-8">
+            <div className="p-4 bg-white/5 rounded-2xl border border-white/10 group-hover:bg-cyan-500/10 group-hover:border-cyan-500/50 transition-all duration-500">
+                <service.icon size={32} className="text-gray-400 group-hover:text-cyan-400 transition-colors" />
+            </div>
+            <div className="text-right">
+                <span className="text-4xl font-black text-white/5 group-hover:text-white/10 transition-colors">{service.id}</span>
+                <Scan size={16} className="text-cyan-500/50 ml-auto mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+        </div>
+
+        {/* Corps Carte */}
+        <div>
+            <h3 className="text-2xl font-black text-white mb-4 uppercase tracking-wide group-hover:text-cyan-400 transition-colors">{service.title}</h3>
+            <p className="text-gray-400 text-sm leading-relaxed mb-8 border-l-2 border-white/10 pl-4 group-hover:border-cyan-500/50 transition-colors">
+                {service.description}
+            </p>
+        </div>
+
+        {/* Footer Carte (Specs) */}
+        <div className="mt-auto pt-6 border-t border-white/5 flex flex-wrap gap-2">
+            {service.specs.map((spec: string, i: number) => (
+                <span key={i} className="text-[10px] font-mono font-bold px-3 py-1 bg-white/5 rounded text-gray-500 border border-transparent group-hover:border-cyan-500/30 group-hover:text-cyan-400 transition-all">
+                    {spec}
+                </span>
+            ))}
+        </div>
+
+        {/* Décoration "Tech" Coins */}
+        <Plus size={10} className="absolute top-4 right-4 text-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+        <Plus size={10} className="absolute bottom-4 left-4 text-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+      </div>
+    </motion.div>
+  );
+}
 
 export default function ServicesPage() {
   return (
@@ -77,72 +155,21 @@ export default function ServicesPage() {
             </HorizontalParallax>
         </div>
 
-        {/* GRILLE SERVICES DÉTAILLÉS */}
-        <div className="grid grid-cols-1 gap-6 md:gap-8">
+        {/* GRILLE SPOTLIGHT */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
            {services.map((service, index) => (
-             <motion.div 
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative p-6 md:p-12 rounded-2xl md:rounded-3xl border border-white/5 bg-black/40 backdrop-blur-xl hover:bg-white/[0.02] transition-all duration-500 overflow-hidden"
-             >
-                {/* Gradient Hover Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
-                
-                <div className="flex flex-col md:flex-row gap-6 md:gap-16 items-start">
-                    
-                    {/* Colonne Gauche : Icone & Titre */}
-                    <div className="w-full md:w-1/3 flex flex-col gap-4 md:gap-6">
-                        <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-cyan-500/50 group-hover:bg-cyan-500/10 transition-colors">
-                            <service.icon size={24} className="text-gray-400 group-hover:text-cyan-400 transition-colors md:w-[32px] md:h-[32px]" />
-                        </div>
-                        <div>
-                            <div className="text-cyan-500 font-mono text-[10px] md:text-xs font-bold mb-1 md:mb-2">{service.id}  SYSTEM</div>
-                            
-                            {/* PARALLAXE LÉGER SUR LE TITRE */}
-                            <HorizontalParallax direction={1} speed={15}>
-                                <h2 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">{service.title}</h2>
-                            </HorizontalParallax>
-                            
-                            <p className="text-xs md:text-sm text-gray-500 font-mono border-l-2 border-cyan-500/30 pl-3 leading-tight">{service.tagline}</p>
-                        </div>
-                    </div>
-
-                    {/* Colonne Droite : Description & Features */}
-                    <div className="w-full md:w-2/3">
-                        <p className="text-gray-300 text-sm md:text-lg leading-relaxed mb-6 md:mb-8 font-light">
-                            {service.description}
-                        </p>
-                        
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-                            {service.features.map((feature, idx) => (
-                                <div key={idx} className="flex items-center gap-3 text-xs md:text-sm font-bold text-gray-400">
-                                    <CheckCircle2 size={14} className="text-cyan-500 min-w-[14px]" />
-                                    {feature}
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-white/5 flex justify-end">
-                            <a href="/contact" className="flex items-center gap-2 text-xs md:text-sm font-bold text-white hover:text-cyan-400 transition-colors cursor-pointer group/link">
-                                DÉMARRER UN PROJET <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
-             </motion.div>
+             <div key={index} className="h-[400px]">
+                <SpotlightCard service={service} index={index} />
+             </div>
            ))}
         </div>
 
         {/* CTA FINAL */}
         <div className="mt-20 md:mt-32 text-center">
             <p className="text-gray-500 mb-4 md:mb-6 font-mono text-xs md:text-sm">PRÊT À DÉPLOYER ?</p>
-            <a href="/contact" className="inline-block px-8 py-4 md:px-12 md:py-6 bg-white text-black font-black text-sm md:text-xl tracking-widest rounded-full hover:bg-cyan-400 hover:scale-105 transition-all shadow-[0_0_50px_rgba(255,255,255,0.2)]">
+            <Link href="/contact" className="inline-block px-8 py-4 md:px-12 md:py-6 bg-white text-black font-black text-sm md:text-xl tracking-widest rounded-full hover:bg-cyan-400 hover:scale-105 transition-all shadow-[0_0_50px_rgba(255,255,255,0.2)]">
                 LANCER L&apos;INITIATIVE
-            </a>
+            </Link>
         </div>
 
       </div>
