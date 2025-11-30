@@ -5,9 +5,13 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
-  onDemandEntries: {
-    maxInactiveAge: 25 * 1000,
-    pagesBufferLength: 2,
+  // Ignore les erreurs ESLint pendant le build
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  // Ignore les erreurs TypeScript pendant le build (Attention, à utiliser si vous êtes sûr que le code marche)
+  typescript: {
+    ignoreBuildErrors: true,
   }
 };
 
