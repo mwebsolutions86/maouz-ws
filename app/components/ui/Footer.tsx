@@ -1,34 +1,50 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import { Twitter, Linkedin, Github, ArrowUpRight, CheckCircle2, Mail } from 'lucide-react';
-import { useTranslations, useLocale } from 'next-intl'; // Import useLocale
+import { useTranslations, useLocale } from 'next-intl';
+import Image from 'next/image';
 import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Footer() {
   const t = useTranslations('Footer');
   const nav = useTranslations('Navigation');
-  const locale = useLocale(); // Récupération de la locale active
+  const locale = useLocale();
   const currentYear = new Date().getFullYear();
 
-  // Helper pour les liens
   const getLink = (path: string) => `/${locale}${path}`;
 
   return (
     <footer className="relative z-10 border-t border-white/10 bg-black overflow-hidden pt-20 pb-10">
       
-      {/* SECTION PRINCIPALE */}
       <div className="max-w-7xl mx-auto px-6 mb-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
             
-            {/* COLONNE 1 */}
+            {/* COLONNE 1 : LOGO & IDENTITÉ */}
             <div className="space-y-6">
-                <div className="flex items-center gap-2 mb-4">
-                    <div className="w-3 h-3 bg-cyan-500 rounded-full shadow-[0_0_10px_#00f3ff]" />
-                    <span className="text-xl font-black tracking-[0.2em] text-white">
+                
+                {/* LOGO MIXTE : ICÔNE + TEXTE (Correction UX) */}
+                <Link href={getLink('/')} className="flex items-center gap-3 w-fit hover:opacity-80 transition-opacity group">
+                    {/* L'icône (Globe) */}
+                    <div className="relative">
+                        <Image 
+                            src="/logo.webp" 
+                            alt="MAZOUZ WS Logo" 
+                            width={60} 
+                            height={60} 
+                            className="h-12 w-auto object-contain group-hover:scale-110 transition-transform duration-500"
+                        />
+                        {/* Petit effet de lueur derrière l'icône */}
+                        <div className="absolute inset-0 bg-cyan-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    
+                    {/* Le Texte (Remis en place) */}
+                    <span className="text-2xl font-black tracking-[0.2em] text-white">
                         MAZOUZ<span className="text-cyan-400">WS</span>
                     </span>
-                </div>
+                </Link>
+                
                 <p className="text-gray-500 text-sm leading-relaxed max-w-xs mb-6">
                     {t('description')}
                 </p>
@@ -68,11 +84,7 @@ export default function Footer() {
                     <li><Link href={getLink('/legal')} className="hover:text-white transition-colors">{t('legal_mentions')}</Link></li>
                     <li><Link href={getLink('/privacy')} className="hover:text-white transition-colors">{t('privacy')}</Link></li>
                     <li><Link href={getLink('/terms')} className="hover:text-white transition-colors">{t('terms')}</Link></li>
-                    
-                    <li className="pt-4">
-                        <LanguageSwitcher />
-                    </li>
-
+                    <li className="pt-4"><LanguageSwitcher /></li>
                     <li className="pt-4 flex gap-4">
                         <a href="#" className="hover:text-white transition-colors"><Linkedin size={18} /></a>
                         <a href="#" className="hover:text-white transition-colors"><Twitter size={18} /></a>
@@ -81,7 +93,7 @@ export default function Footer() {
                 </ul>
             </div>
 
-            {/* COLONNE 4 */}
+            {/* COLONNE 4 : STATUS */}
             <div className="bg-white/[0.02] border border-white/5 p-6 rounded-2xl h-fit">
                 <div className="flex items-center gap-3 mb-6">
                     <div className="relative">
@@ -93,14 +105,11 @@ export default function Footer() {
                         <p className="text-xs text-green-400 font-bold">{t('operational')}</p>
                     </div>
                 </div>
-
                 <div className="space-y-4">
                     <p className="text-xs text-gray-400">{t('newsletter')}</p>
                     <div className="flex">
                         <input type="email" placeholder={t('email_placeholder')} className="bg-black border border-white/10 border-r-0 rounded-l-lg px-4 py-2 text-xs text-white w-full focus:outline-none focus:border-cyan-500/50 transition-colors" />
-                        <button className="bg-white/10 border border-white/10 border-l-0 rounded-r-lg px-3 hover:bg-cyan-500 hover:text-black transition-colors">
-                            <Mail size={14} />
-                        </button>
+                        <button className="bg-white/10 border border-white/10 border-l-0 rounded-r-lg px-3 hover:bg-cyan-500 hover:text-black transition-colors"><Mail size={14} /></button>
                     </div>
                 </div>
             </div>
@@ -108,6 +117,7 @@ export default function Footer() {
         </div>
     </div>
 
+      {/* COPYRIGHT */}
       <div className="border-t border-white/10 pt-8 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-gray-600 font-mono tracking-widest">
             <p>© {currentYear} MAZOUZ WEB SOLUTIONS SARL. {t('rights')}</p>

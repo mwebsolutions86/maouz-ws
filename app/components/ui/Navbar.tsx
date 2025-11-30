@@ -6,6 +6,7 @@ import { useTranslations, useLocale } from 'next-intl'; // Import useLocale
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import LanguageSwitcher from './LanguageSwitcher';
+import Image from 'next/image';
 
 export default function Navbar() {
   const t = useTranslations('Navigation');
@@ -22,9 +23,18 @@ export default function Navbar() {
     <>
       <nav className="fixed top-0 left-0 w-full z-50 px-6 py-6 flex justify-between items-center backdrop-blur-md border-b border-white/5 bg-black/20 transition-all duration-300">
         
+       
         {/* LOGO */}
-        <Link href={getLink('/')} className="flex items-center gap-2 group cursor-pointer z-50" onClick={closeMenu}>
-          <div className="w-3 h-3 bg-cyan-500 rounded-full animate-pulse shadow-[0_0_15px_#00f3ff] group-hover:scale-125 transition-transform" />
+{/* LOGO HEADER : ICÔNE + TEXTE */}
+        <Link href={getLink('/')} className="flex items-center gap-2 relative z-50 group" onClick={closeMenu}>
+          <Image 
+            src="/logo.webp" 
+            alt="MAZOUZ WS" 
+            width={50} 
+            height={50} 
+            className="h-10 w-auto object-contain group-hover:rotate-12 transition-transform duration-500"
+            priority
+          />
           <span className="text-xl font-black tracking-[0.2em] text-white">
             MAZOUZ<span className="text-cyan-400 group-hover:text-white transition-colors">WS</span>
           </span>
