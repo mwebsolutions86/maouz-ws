@@ -1,0 +1,17 @@
+{
+  "HomePage": {
+    "title": "ELITE DIGITAL AGENCY",
+    "hero": "FORGING REALITY",
+    "description": "We don't just build websites. We build digital ecosystems that turn your vision into market domination.",
+    "cta_start": "START PROJECT",
+    "cta_services": "OUR EXPERTISE"
+  },
+  "Navigation": {
+    "agence": "THE AGENCY",
+    "services": "SERVICES",
+    "offres": "OFFERS",
+    "methode": "METHOD",
+    "portfolio": "PORTFOLIO",
+    "contact": "CONTACT"
+  }
+}

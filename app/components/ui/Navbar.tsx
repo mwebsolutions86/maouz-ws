@@ -24,12 +24,15 @@ export default function Navbar() {
         </Link>
 
         {/* MENU DESKTOP */}
-        <div className="hidden md:flex gap-8 text-xs font-bold tracking-widest text-gray-400">
+        <div className="hidden md:flex gap-6 text-xs font-bold tracking-widest text-gray-400">
           <Link href="/agence" className="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-cyan-400 hover:after:w-full after:transition-all">
             L&apos;AGENCE
           </Link>
           <Link href="/services" className="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-cyan-400 hover:after:w-full after:transition-all">
             SERVICES
+          </Link>
+          <Link href="/offres" className="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-cyan-400 hover:after:w-full after:transition-all">
+            OFFRES
           </Link>
           <Link href="/methode" className="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-cyan-400 hover:after:w-full after:transition-all">
             MÉTHODE
@@ -78,6 +81,13 @@ export default function Navbar() {
                 className="text-3xl font-black text-white hover:text-cyan-400 transition-colors tracking-widest"
               >
                 SERVICES
+              </Link>
+              <Link 
+                href="/offres" 
+                onClick={closeMenu}
+                className="text-3xl font-black text-cyan-400 hover:text-white transition-colors tracking-widest"
+              >
+                OFFRES
               </Link>
               <Link 
                 href="/methode" 

@@ -1,0 +1,17 @@
+{
+  "HomePage": {
+    "title": "AGENCE DIGITALE D'ÉLITE",
+    "hero": "FORGING REALITY",
+    "description": "Nous ne créons pas de simples sites web. Nous bâtissons des écosystèmes numériques qui transforment votre vision en domination marché.",
+    "cta_start": "DÉMARRER LE PROJET",
+    "cta_services": "NOTRE EXPERTISE"
+  },
+  "Navigation": {
+    "agence": "L'AGENCE",
+    "services": "SERVICES",
+    "offres": "OFFRES",
+    "methode": "MÉTHODE",
+    "portfolio": "PORTFOLIO",
+    "contact": "CONTACT"
+  }
+}

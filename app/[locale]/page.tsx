@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Globe, Smartphone, Brain, Cpu, Code, Layers, Zap, Search, PenTool, Rocket, Mail, TrendingUp, ShieldCheck, Clock } from 'lucide-react';
-import Image from 'next/image';
+import { ArrowRight, Globe, Smartphone, Brain, Cpu, Code, Layers, Zap, Search, PenTool, Rocket, Mail, TrendingUp, ShieldCheck, Clock, Activity, Server, Lock, Wifi, FileText, Database, SmartphoneCharging,} from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Background3D from '@/app/components/3d/Background3D';
 
 // --- PARALLAXE ---
@@ -29,9 +29,18 @@ function HorizontalParallax({ children, direction = 1, speed = 100, className = 
   return <motion.div ref={ref} style={{ x }} className={className}>{children}</motion.div>;
 }
 
+// --- INTERFACE POUR LES CARTES ---
+interface CardProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  icon: any; 
+  title: string;
+  desc?: string;
+  number?: string;
+  index?: number;
+}
+
 // --- COMPOSANTS UI ---
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ServiceCard = ({ icon: Icon, title, desc }: any) => (
+const ServiceCard = ({ icon: Icon, title, desc }: CardProps) => (
   <div className="group relative p-6 md:p-8 rounded-2xl border border-white/5 bg-black/40 backdrop-blur-md hover:bg-white/5 transition-all duration-500 overflow-hidden h-full">
     <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-1000" />
     <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 mb-6 group-hover:border-cyan-500/50 group-hover:bg-cyan-500/10 transition-colors">
@@ -42,8 +51,7 @@ const ServiceCard = ({ icon: Icon, title, desc }: any) => (
   </div>
 );
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const StepCard = ({ number, title, desc, icon: Icon }: any) => (
+const StepCard = ({ number, title, desc, icon: Icon }: CardProps) => (
   <div className="flex flex-col items-center text-center p-6 border border-white/5 rounded-xl bg-white/[0.02]">
     <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-cyan-900/50 to-blue-900/50 flex items-center justify-center border border-cyan-500/30 mb-4 md:mb-6 relative">
       <Icon size={24} className="text-cyan-400 md:w-[30px] md:h-[30px]" />
@@ -55,6 +63,105 @@ const StepCard = ({ number, title, desc, icon: Icon }: any) => (
     <p className="text-xs md:text-sm text-gray-400">{desc}</p>
   </div>
 );
+
+// --- SYSTEM MONITOR ---
+const SystemMonitor = () => {
+  const [cpuLoad, setCpuLoad] = useState(45);
+  const [memoryLoad, setMemoryLoad] = useState(62);
+  const [netSpeed, setNetSpeed] = useState(840);
+  const [logs, setLogs] = useState<string[]>([
+    "SYSTEM INTEGRITY: 100%",
+    "CONNECTING TO EDGE NODES...",
+    "OPTIMIZING RENDER CYCLES",
+  ]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCpuLoad(prev => Math.min(99, Math.max(20, prev + (Math.random() * 20 - 10))));
+      setMemoryLoad(prev => Math.min(99, Math.max(30, prev + (Math.random() * 10 - 5))));
+      setNetSpeed(prev => Math.min(999, Math.max(500, prev + (Math.random() * 100 - 50))));
+      
+      const newLogs = [
+        "ENCRYPTING DATA PACKETS...",
+        "SYNCING GLOBAL STATE...",
+        "DETECTING ANOMALIES... [NONE]",
+        "REFRESHING CACHE LAYER...",
+        "ALLOCATING VIRTUAL RESOURCES...",
+        "PING: 12ms [STABLE]",
+        "DEPLOYING MICROSERVICE [AUTH]...",
+        "USER_AGENT: ELITE DETECTED"
+      ];
+      const randomLog = newLogs[Math.floor(Math.random() * newLogs.length)];
+      
+      setLogs(prev => {
+        const updated = [...prev, randomLog];
+        if (updated.length > 5) updated.shift();
+        return updated;
+      });
+    }, 800);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="w-full max-w-4xl mx-auto bg-black/80 border border-white/10 rounded-xl overflow-hidden shadow-2xl backdrop-blur-md">
+      <div className="flex justify-between items-center px-6 py-3 border-b border-white/10 bg-white/5">
+        <div className="flex items-center gap-3">
+            <Activity size={16} className="text-green-500 animate-pulse" />
+            <span className="text-xs font-mono font-bold text-white tracking-widest">MAZOUZ_CORE // MONITOR</span>
+        </div>
+        <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-xs font-mono text-green-500">LIVE</span>
+        </div>
+      </div>
+      <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="space-y-6">
+            <div className="space-y-2">
+                <div className="flex justify-between text-xs font-mono text-cyan-400">
+                    <span>CPU_LOAD</span>
+                    <span>{Math.round(cpuLoad)}%</span>
+                </div>
+                <div className="w-full h-2 bg-gray-900 rounded-full overflow-hidden">
+                    <motion.div className="h-full bg-cyan-500 shadow-[0_0_10px_#06b6d4]" animate={{ width: `${cpuLoad}%` }} transition={{ ease: "linear", duration: 0.5 }} />
+                </div>
+            </div>
+            <div className="space-y-2">
+                <div className="flex justify-between text-xs font-mono text-purple-400">
+                    <span>MEMORY_ALLOC</span>
+                    <span>{Math.round(memoryLoad)}%</span>
+                </div>
+                <div className="w-full h-2 bg-gray-900 rounded-full overflow-hidden">
+                    <motion.div className="h-full bg-purple-500 shadow-[0_0_10px_#a855f7]" animate={{ width: `${memoryLoad}%` }} transition={{ ease: "linear", duration: 0.5 }} />
+                </div>
+            </div>
+            <div className="flex items-center justify-between p-4 border border-white/10 rounded-lg bg-white/[0.02]">
+                <div className="flex items-center gap-3">
+                    <Wifi size={20} className="text-white/50" />
+                    <span className="text-xs font-mono text-gray-400">BANDWIDTH</span>
+                </div>
+                <span className="text-xl font-black text-white font-mono">{Math.round(netSpeed)} <span className="text-xs text-gray-600">MB/S</span></span>
+            </div>
+        </div>
+        <div className="font-mono text-xs space-y-2 h-[150px] overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/90 pointer-events-none z-10"></div>
+            {logs.map((log, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-2">
+                    <span className="text-gray-600">[{new Date().toLocaleTimeString()}]</span>
+                    <span className={i === logs.length - 1 ? "text-white font-bold" : "text-green-500/70"}>{log}</span>
+                </motion.div>
+            ))}
+        </div>
+      </div>
+      <div className="px-6 py-3 border-t border-white/10 bg-black/50 flex justify-between items-center text-[10px] text-gray-600 font-mono">
+         <div className="flex gap-4">
+            <span className="flex items-center gap-1"><Server size={10} /> NODE_01: OK</span>
+            <span className="flex items-center gap-1"><Lock size={10} /> SECURE: AES-256</span>
+         </div>
+         <span className="animate-pulse">_READY_FOR_DEPLOYMENT</span>
+      </div>
+    </div>
+  );
+};
 
 export default function Home() {
   return (
@@ -130,11 +237,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* NOUVELLE SECTION : IMPACT STRATÉGIQUE (RASSURER LE CLIENT BUSINESS) */}
+      {/* NOUVELLE SECTION : IMPACT STRATÉGIQUE */}
       <section className="relative z-10 py-20 bg-white/[0.02] border-y border-white/5">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
             <div className="text-center mb-16">
-                <h2 className="text-2xl md:text-4xl font-black text-white mb-4">AU-DELÀ DU CODE</h2>
+                {/* PARALLAXE AJOUTÉ ICI */}
+                <HorizontalParallax direction={1} speed={40}>
+                  <h2 className="text-2xl md:text-4xl font-black text-white mb-4">AU-DELÀ DU CODE</h2>
+                </HorizontalParallax>
                 <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">
                     La technologie n&apos;est qu&apos;un outil. Notre véritable métier est de générer de la croissance pour votre entreprise.
                 </p>
@@ -166,7 +276,78 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SECTION 3 : NOTRE MÉTHODE */}
+      {/* SYSTEM MONITOR */}
+      <section className="relative z-10 py-20 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 md:px-6 text-center mb-12">
+             <HorizontalParallax direction={1} speed={30}>
+                <h2 className="text-cyan-500 text-[10px] md:text-xs font-bold tracking-[0.3em] md:tracking-[0.5em] mb-4">CORE SYSTEM</h2>
+            </HorizontalParallax>
+            {/* PARALLAXE AJOUTÉ ICI */}
+            <HorizontalParallax direction={-1} speed={50}>
+              <h3 className="text-3xl md:text-5xl font-black text-white">CONTRÔLE EN <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">TEMPS RÉEL</span></h3>
+            </HorizontalParallax>
+          </div>
+          <div className="px-4 md:px-0">
+              <SystemMonitor />
+          </div>
+      </section>
+
+      {/* NOUVELLE SECTION : INTELLIGENCE STRATÉGIQUE */}
+      <section className="relative z-10 py-24 border-t border-white/5 bg-black/50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-16 md:mb-20">
+            <HorizontalParallax direction={-1} speed={20}>
+                <h2 className="text-cyan-500 font-mono text-xs tracking-widest mb-4 flex items-center gap-2">
+                    <Database size={14} /> BASE DE CONNAISSANCES
+                </h2>
+            </HorizontalParallax>
+            {/* PARALLAXE AJOUTÉ ICI */}
+            <HorizontalParallax direction={1} speed={60}>
+              <h3 className="text-3xl md:text-6xl font-black text-white">INTELLIGENCE <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">STRATÉGIQUE</span></h3>
+            </HorizontalParallax>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+             {/* Article 1 */}
+             <div className="group relative p-8 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-purple-500/30 transition-all duration-500 overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <FileText size={60} />
+                </div>
+                <div className="text-[10px] font-mono text-purple-500 mb-4 tracking-widest">FILE_001 // SEO_CORE</div>
+                <h4 className="text-xl font-bold text-white mb-4 group-hover:text-purple-400 transition-colors">L&apos;HYPER-PERFORMANCE SEO</h4>
+                <p className="text-gray-400 text-sm leading-relaxed text-justify">
+                  Dans l&apos;algorithme de Google, la vitesse n&apos;est pas une option, c&apos;est une loi. Nous développons des sites <strong>Next.js</strong> optimisés pour les <strong>Core Web Vitals</strong>. Chaque milliseconde gagnée est une victoire sur vos concurrents. Notre code est minifié, nos images compressées (WebP) et notre architecture pensée pour le <strong>référencement naturel (SEO)</strong> maximal.
+                </p>
+             </div>
+
+             {/* Article 2 */}
+             <div className="group relative p-8 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-cyan-500/30 transition-all duration-500 overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <SmartphoneCharging size={60} />
+                </div>
+                <div className="text-[10px] font-mono text-cyan-500 mb-4 tracking-widest">FILE_002 // MOBILE_OPS</div>
+                <h4 className="text-xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">DOMINATION MOBILE</h4>
+                <p className="text-gray-400 text-sm leading-relaxed text-justify">
+                  L&apos;utilisateur moderne est mobile. Nous forgeons des <strong>applications mobiles React Native</strong> qui offrent une expérience native fluide (60 FPS) sur iOS et Android. Pas de compromis : accès caméra, géolocalisation, notifications push. Votre entreprise reste dans la poche de vos clients, accessible en un clic.
+                </p>
+             </div>
+
+             {/* Article 3 */}
+             <div className="group relative p-8 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-green-500/30 transition-all duration-500 overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <Globe size={60} />
+                </div>
+                <div className="text-[10px] font-mono text-green-500 mb-4 tracking-widest">FILE_003 // WEB_3.0</div>
+                <h4 className="text-xl font-bold text-white mb-4 group-hover:text-green-400 transition-colors">IMMERSION WEB 3.0</h4>
+                <p className="text-gray-400 text-sm leading-relaxed text-justify">
+                  Le web statique est mort. L&apos;avenir est à l&apos;interactivité. En intégrant <strong>Three.js et WebGL</strong>, nous transformons votre site vitrine en une expérience mémorable. Un visiteur captivé est un visiteur qui convertit. Nous créons des interfaces qui racontent votre histoire par le mouvement et la profondeur.
+                </p>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION METHODOLOGIE */}
       <section id="process" className="relative z-10 py-20 md:py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-12 md:mb-20">
@@ -177,7 +358,6 @@ export default function Home() {
               Pas de place pour le hasard. Nous appliquons un processus d&apos;ingénierie rigoureux pour garantir le succès.
             </p>
           </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             <StepCard number="01" title="AUDIT & VISION" desc="Nous disséquons votre besoin pour construire une stratégie technique infaillible." icon={Search} />
             <StepCard number="02" title="ARCHITECTURE" desc="Design système robuste et UX/UI centrée sur la conversion et l&apos;émotion." icon={PenTool} />
@@ -221,22 +401,6 @@ export default function Home() {
                         </div>
                     </div>
                 </Parallax>
-            </div>
-        </div>
-      </section>
-
-      {/* NOUVELLE SECTION : ALLIANCE TECHNOLOGIQUE (PREUVE SOCIALE) */}
-      <section className="py-12 border-t border-white/5 bg-black/80">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-            <p className="text-[10px] md:text-xs font-bold text-gray-600 tracking-[0.3em] mb-8">PROPULSÉ PAR LES MEILLEURS STANDARDS</p>
-            <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-                {/* On simule des logos avec du texte stylisé pour l'instant */}
-                <span className="text-xl font-black text-white">NEXT.JS</span>
-                <span className="text-xl font-black text-white">VERCEL</span>
-                <span className="text-xl font-black text-white">REACT</span>
-                <span className="text-xl font-black text-white">AWS</span>
-                <span className="text-xl font-black text-white">SHOPIFY</span>
-                <span className="text-xl font-black text-white">STRIPE</span>
             </div>
         </div>
       </section>

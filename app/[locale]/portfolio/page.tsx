@@ -16,7 +16,7 @@ const projects = [
     category: "Mobile App • HealthTech",
     description: "L'application de fitness ultime pilotée par IA. Analyse biométrique en temps réel et coaching adaptatif.",
     tech: ["React Native", "TensorFlow", "Supabase"],
-    image: "https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&q=80&w=800", 
+    image: "NexusAIfit.webp", 
     link: "#"
   },
   {
@@ -25,7 +25,7 @@ const projects = [
     category: "Drone Control • IoT",
     description: "Interface de pilotage de drones industriels avec retour vidéo latence zéro et télémétrie 3D.",
     tech: ["Electron", "WebSockets", "Three.js"],
-    image: "https://images.unsplash.com/photo-1506947411487-a56738267384?auto=format&fit=crop&q=80&w=800", 
+    image: "HardSoftShync.webp", 
     link: "#"
   },
   {
@@ -34,7 +34,7 @@ const projects = [
     category: "SaaS • Fintech",
     description: "Dashboard de trading haute fréquence. Visualisation de données boursières complexes en temps réel.",
     tech: ["Next.js", "D3.js", "Go"],
-    image: "https://images.unsplash.com/photo-1611974765270-ca12586343bb?auto=format&fit=crop&q=80&w=800",
+    image: "quantume trading.webp",
     link: "#"
   },
   {
@@ -43,7 +43,7 @@ const projects = [
     category: "E-commerce • Web3",
     description: "Marketplace NFT nouvelle génération. Expérience d'achat immersive et sécurisée par la blockchain.",
     tech: ["Solidity", "Wagmi", "Tailwind"],
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=800",
+    image: "NeonMarket.webp",
     link: "#"
   }
 ];
