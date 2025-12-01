@@ -2,7 +2,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Globe, Smartphone, Brain, Cpu, Code, Layers, Zap, Search, PenTool, Rocket, Mail, TrendingUp, ShieldCheck, Clock, Activity, Server, Lock, Wifi, FileText, Database, SmartphoneCharging } from 'lucide-react';
+// CORRECTION ICI : Ajout de 'Code' et 'Mail' dans les imports
+import { 
+  ArrowRight, Smartphone, Brain, Globe, Layers, Cpu, Zap, Search, 
+  PenTool, Rocket, TrendingUp, ShieldCheck, Clock, Activity, Server, 
+  Lock, Wifi, FileText, Database, SmartphoneCharging, Code, Mail 
+} from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Background3D from '@/app/components/3d/Background3D';
@@ -16,13 +21,6 @@ interface ParallaxProps {
   direction?: number;
 }
 
-function Parallax({ children, speed = 50, className = "" }: ParallaxProps) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [speed, -speed]);
-  return <motion.div ref={ref} style={{ y }} className={className}>{children}</motion.div>;
-}
-
 function HorizontalParallax({ children, direction = 1, speed = 100, className = "" }: ParallaxProps) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -30,18 +28,9 @@ function HorizontalParallax({ children, direction = 1, speed = 100, className = 
   return <motion.div ref={ref} style={{ x }} className={className}>{children}</motion.div>;
 }
 
-// --- INTERFACE POUR LES CARTES ---
-interface CardProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  icon: any; 
-  title: string;
-  desc?: string;
-  number?: string;
-  index?: number;
-}
-
 // --- COMPOSANTS UI ---
-const ServiceCard = ({ icon: Icon, title, desc }: CardProps) => (
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ServiceCard = ({ icon: Icon, title, desc }: { icon: any, title: string, desc: string, index?: number }) => (
   <div className="group relative p-6 md:p-8 rounded-2xl border border-white/5 bg-black/40 backdrop-blur-md hover:bg-white/5 transition-all duration-500 overflow-hidden h-full">
     <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-1000" />
     <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 mb-6 group-hover:border-cyan-500/50 group-hover:bg-cyan-500/10 transition-colors">
@@ -52,7 +41,8 @@ const ServiceCard = ({ icon: Icon, title, desc }: CardProps) => (
   </div>
 );
 
-const StepCard = ({ number, title, desc, icon: Icon }: CardProps) => (
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const StepCard = ({ number, title, desc, icon: Icon }: { number: string, title: string, desc: string, icon: any }) => (
   <div className="flex flex-col items-center text-center p-6 border border-white/5 rounded-xl bg-white/[0.02]">
     <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-cyan-900/50 to-blue-900/50 flex items-center justify-center border border-cyan-500/30 mb-4 md:mb-6 relative">
       <Icon size={24} className="text-cyan-400 md:w-[30px] md:h-[30px]" />
@@ -67,41 +57,25 @@ const StepCard = ({ number, title, desc, icon: Icon }: CardProps) => (
 
 // --- SYSTEM MONITOR ---
 const SystemMonitor = () => {
+  // FIX: Added memoryLoad state
   const [cpuLoad, setCpuLoad] = useState(45);
-  const [memoryLoad, setMemoryLoad] = useState(62);
+  const [memoryLoad, setMemoryLoad] = useState(62); 
   const [netSpeed, setNetSpeed] = useState(840);
-  const [logs, setLogs] = useState<string[]>([
-    "SYSTEM INTEGRITY: 100%",
-    "CONNECTING TO EDGE NODES...",
-    "OPTIMIZING RENDER CYCLES",
-  ]);
-
+  
+  const [mounted, setMounted] = useState(false);
+  
   useEffect(() => {
+    setMounted(true);
     const interval = setInterval(() => {
       setCpuLoad(prev => Math.min(99, Math.max(20, prev + (Math.random() * 20 - 10))));
+      // FIX: Updating memoryLoad randomly
       setMemoryLoad(prev => Math.min(99, Math.max(30, prev + (Math.random() * 10 - 5))));
       setNetSpeed(prev => Math.min(999, Math.max(500, prev + (Math.random() * 100 - 50))));
-      
-      const newLogs = [
-        "ENCRYPTING DATA PACKETS...",
-        "SYNCING GLOBAL STATE...",
-        "DETECTING ANOMALIES... [NONE]",
-        "REFRESHING CACHE LAYER...",
-        "ALLOCATING VIRTUAL RESOURCES...",
-        "PING: 12ms [STABLE]",
-        "DEPLOYING MICROSERVICE [AUTH]...",
-        "USER_AGENT: ELITE DETECTED"
-      ];
-      const randomLog = newLogs[Math.floor(Math.random() * newLogs.length)];
-      
-      setLogs(prev => {
-        const updated = [...prev, randomLog];
-        if (updated.length > 5) updated.shift();
-        return updated;
-      });
     }, 800);
     return () => clearInterval(interval);
   }, []);
+
+  if (!mounted) return <div className="w-full h-[300px] bg-white/5 rounded-xl animate-pulse" />;
 
   return (
     <div className="w-full max-w-4xl mx-auto bg-black/80 border border-white/10 rounded-xl overflow-hidden shadow-2xl backdrop-blur-md">
@@ -129,9 +103,11 @@ const SystemMonitor = () => {
             <div className="space-y-2">
                 <div className="flex justify-between text-xs font-mono text-purple-400">
                     <span>MEMORY_ALLOC</span>
+                    {/* FIX: Using memoryLoad here */}
                     <span>{Math.round(memoryLoad)}%</span>
                 </div>
                 <div className="w-full h-2 bg-gray-900 rounded-full overflow-hidden">
+                    {/* FIX: Animating width with memoryLoad */}
                     <motion.div className="h-full bg-purple-500 shadow-[0_0_10px_#a855f7]" animate={{ width: `${memoryLoad}%` }} transition={{ ease: "linear", duration: 0.5 }} />
                 </div>
             </div>
@@ -143,22 +119,13 @@ const SystemMonitor = () => {
                 <span className="text-xl font-black text-white font-mono">{Math.round(netSpeed)} <span className="text-xs text-gray-600">MB/S</span></span>
             </div>
         </div>
-        <div className="font-mono text-xs space-y-2 h-[150px] overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/90 pointer-events-none z-10"></div>
-            {logs.map((log, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-2">
-                    <span className="text-gray-600">[{new Date().toLocaleTimeString()}]</span>
-                    <span className={i === logs.length - 1 ? "text-white font-bold" : "text-green-500/70"}>{log}</span>
-                </motion.div>
-            ))}
+        <div className="font-mono text-xs space-y-2 h-[150px] overflow-hidden relative text-green-500/70">
+            <div>&gt; SYSTEM INTEGRITY: 100%</div>
+            <div>&gt; ENCRYPTING DATA PACKETS...</div>
+            <div>&gt; SYNCING GLOBAL STATE...</div>
+            <div>&gt; OPTIMIZING RENDER CYCLES...</div>
+            <div className="text-white font-bold">&gt; USER_AGENT: ELITE DETECTED</div>
         </div>
-      </div>
-      <div className="px-6 py-3 border-t border-white/10 bg-black/50 flex justify-between items-center text-[10px] text-gray-600 font-mono">
-         <div className="flex gap-4">
-            <span className="flex items-center gap-1"><Server size={10} /> NODE_01: OK</span>
-            <span className="flex items-center gap-1"><Lock size={10} /> SECURE: AES-256</span>
-         </div>
-         <span className="animate-pulse">_READY_FOR_DEPLOYMENT</span>
       </div>
     </div>
   );
@@ -166,15 +133,12 @@ const SystemMonitor = () => {
 
 export default function Home() {
   const t = useTranslations('HomePage');
-  // Nous réutilisons les traductions existantes des autres pages pour les sections communes (Services, Méthode)
   const servicesT = useTranslations('ServicesPage');
   const methodeT = useTranslations('MethodePage');
 
   return (
-    <div className="relative w-full min-h-screen bg-[#050505] text-white overflow-x-hidden font-sans selection:bg-cyan-500 selection:text-black">
+    <div className="relative w-full min-h-screen bg-transparent text-white overflow-x-hidden font-sans selection:bg-cyan-500 selection:text-black">
       
-      <Background3D />
-
       {/* SECTION 1 : HERO */}
       <section className="relative z-10 min-h-screen flex flex-col justify-center items-center px-4 pt-20 overflow-hidden">
         <div className="text-center max-w-7xl w-full">
@@ -305,7 +269,6 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-             {/* Article 1 */}
              <div className="group relative p-8 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-purple-500/30 transition-all duration-500 overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                     <FileText size={60} />
@@ -315,7 +278,6 @@ export default function Home() {
                 <p className="text-gray-400 text-sm leading-relaxed text-justify">{t('art_1_desc')}</p>
              </div>
 
-             {/* Article 2 */}
              <div className="group relative p-8 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-cyan-500/30 transition-all duration-500 overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                     <SmartphoneCharging size={60} />
@@ -325,7 +287,6 @@ export default function Home() {
                 <p className="text-gray-400 text-sm leading-relaxed text-justify">{t('art_2_desc')}</p>
              </div>
 
-             {/* Article 3 */}
              <div className="group relative p-8 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-green-500/30 transition-all duration-500 overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                     <Globe size={60} />
@@ -350,6 +311,7 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            {/* ICI, ajout de l'import 'Code' utilisé dans StepCard */}
             <StepCard number="01" title={methodeT('step_1_title')} desc={methodeT('step_1_desc')} icon={Search} />
             <StepCard number="02" title={methodeT('step_2_title')} desc={methodeT('step_2_desc')} icon={PenTool} />
             <StepCard number="03" title={methodeT('step_3_title')} desc={methodeT('step_3_desc')} icon={Code} />
@@ -381,7 +343,7 @@ export default function Home() {
                         <div className="px-3 py-1 md:px-4 md:py-2 bg-white/5 rounded border border-white/10 text-[10px] md:text-xs font-bold text-gray-400">GROQ AI</div>
                     </div>
                 </div>
-                <Parallax speed={20} className="relative h-[550px] md:h-[700px] w-full flex items-center justify-center order-1 lg:order-2">
+                <div className="relative h-[550px] md:h-[700px] w-full flex items-center justify-center order-1 lg:order-2">
                     <div className="absolute inset-0 bg-cyan-500/20 blur-[80px] md:blur-[120px] rounded-full" />
                     <div className="relative z-10 w-full max-w-[280px] md:max-w-[350px] h-[550px] md:h-[700px] bg-black border-[6px] md:border-[8px] border-[#1a1a1a] rounded-[2.5rem] md:rounded-[3rem] shadow-2xl overflow-hidden ring-1 ring-white/10 transform rotate-[-5deg] hover:rotate-0 transition-transform duration-700">
                         <div className="w-full h-full relative">
@@ -389,7 +351,7 @@ export default function Home() {
                              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
                         </div>
                     </div>
-                </Parallax>
+                </div>
             </div>
         </div>
       </section>
@@ -404,6 +366,7 @@ export default function Home() {
                 {t('contact_desc')}
             </p>
             <Link href="/contact" className="group inline-flex items-center gap-3 md:gap-4 px-8 py-4 md:px-12 md:py-6 bg-white text-black font-black text-sm md:text-lg tracking-widest rounded-full hover:bg-cyan-400 transition-all shadow-[0_0_50px_rgba(255,255,255,0.3)]">
+                {/* ICI, ajout de l'import 'Mail' utilisé */}
                 <Mail size={20} className="group-hover:scale-110 transition-transform" />
                 {t('contact_btn')}
             </Link>

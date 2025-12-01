@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Background3D from '@/app/components/3d/Background3D';
 import { HorizontalParallax } from '@/app/components/ui/Parallax';
 import { Scale, AlertTriangle, Copyright, Globe } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -10,12 +9,10 @@ export default function TermsPage() {
   const t = useTranslations('TermsPage');
 
   return (
-    <div className="relative min-h-screen bg-[#050505] text-white pt-28 md:pt-32 px-4 md:px-6 overflow-x-hidden selection:bg-cyan-500 selection:text-black">
-      <Background3D />
+    <div className="relative min-h-screen bg-transparent text-white pt-28 md:pt-32 px-4 md:px-6 overflow-x-hidden selection:bg-cyan-500 selection:text-black">
       
       <div className="max-w-4xl mx-auto relative z-10 pb-20">
         
-        {/* HEADER */}
         <div className="mb-16 md:mb-24 text-center">
             <HorizontalParallax direction={-1} speed={30}>
                 <h2 className="text-cyan-500 text-[10px] md:text-xs font-bold tracking-[0.3em] md:tracking-[0.5em] mb-4 uppercase">{t('subtitle')}</h2>
@@ -27,7 +24,6 @@ export default function TermsPage() {
             </HorizontalParallax>
         </div>
 
-        {/* CONTENU */}
         <div className="space-y-8">
             
             <section className="group p-8 border border-white/10 rounded-3xl hover:border-cyan-500/30 transition-all bg-black/40 backdrop-blur-md">

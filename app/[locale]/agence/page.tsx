@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import Background3D from '@/app/components/3d/Background3D';
+// Pas de Background3D ici, il est dans le layout
 import { HorizontalParallax } from '@/app/components/ui/Parallax';
 import { Zap, Trophy, Crosshair, Terminal, Globe, ChevronRight, User, Lock } from 'lucide-react';
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
@@ -9,7 +9,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
-// --- CODE TERMINAL (Décoratif, on peut le laisser en anglais technique) ---
+// --- CODE TERMINAL ---
 const codeSnippets = [
   "> INITIALIZING NEURAL LINK...",
   "> ACCESSING CORE ARCHITECTURE [V.15.0.2]",
@@ -26,7 +26,6 @@ const codeSnippets = [
   "> ONE_MAN_ARMY_PROTOCOL: ACTIVE",
 ];
 
-// --- COMPOSANT TERMINAL ---
 const CyberTerminal = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [lines, setLines] = useState<string[]>([]);
@@ -79,15 +78,10 @@ const CyberTerminal = () => {
           ))}
         </div>
       </div>
-
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-30 bg-[length:100%_2px,3px_100%] pointer-events-none" />
-      <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-      <div className="absolute top-0 w-full h-1 bg-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.5)] animate-[scan_4s_linear_infinite] z-40 opacity-50" />
     </div>
   );
 };
 
-// --- COMPOSANT CARTE SPOTLIGHT (VALEURS) ---
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function SpotlightValueCard({ value, index }: { value: any, index: number }) {
   const mouseX = useMotionValue(0);
@@ -137,41 +131,16 @@ function SpotlightValueCard({ value, index }: { value: any, index: number }) {
 export default function AgencePage() {
   const t = useTranslations('AgencePage');
 
-  // --- DONNÉES DYNAMIQUES ---
   const history = [
-    { 
-      year: "2023", 
-      title: t('history_2023_title'), 
-      desc: t('history_2023_desc')
-    },
-    { 
-      year: "2024", 
-      title: t('history_2024_title'), 
-      desc: t('history_2024_desc')
-    },
-    { 
-      year: "2025", 
-      title: t('history_2025_title'), 
-      desc: t('history_2025_desc')
-    }
+    { year: "2023", title: t('history_2023_title'), desc: t('history_2023_desc') },
+    { year: "2024", title: t('history_2024_title'), desc: t('history_2024_desc') },
+    { year: "2025", title: t('history_2025_title'), desc: t('history_2025_desc') }
   ];
 
   const values = [
-    {
-      icon: User,
-      title: t('val_1_title'),
-      desc: t('val_1_desc')
-    },
-    {
-      icon: Crosshair,
-      title: t('val_2_title'),
-      desc: t('val_2_desc')
-    },
-    {
-      icon: Zap,
-      title: t('val_3_title'),
-      desc: t('val_3_desc')
-    }
+    { icon: User, title: t('val_1_title'), desc: t('val_1_desc') },
+    { icon: Crosshair, title: t('val_2_title'), desc: t('val_2_desc') },
+    { icon: Zap, title: t('val_3_title'), desc: t('val_3_desc') }
   ];
 
   const team = [
@@ -187,8 +156,8 @@ export default function AgencePage() {
   const stack = ["NEXT.JS", "REACT NATIVE", "TYPESCRIPT", "PYTHON", "RUST", "SUPABASE", "AWS", "WEBGL", "SOLIDITY"];
 
   return (
-    <div className="relative min-h-screen bg-[#050505] text-white pt-28 md:pt-32 px-4 md:px-6 overflow-x-hidden selection:bg-cyan-500 selection:text-black">
-      <Background3D />
+    // CORRECTION : bg-transparent pour laisser voir les étoiles du layout
+    <div className="relative min-h-screen bg-transparent text-white pt-28 md:pt-32 px-4 md:px-6 overflow-x-hidden selection:bg-cyan-500 selection:text-black">
       
       <div className="max-w-7xl mx-auto relative z-10 pb-20">
         
@@ -217,7 +186,6 @@ export default function AgencePage() {
                     </HorizontalParallax>
                     <p>{t('vision_text')}</p>
                 </div>
-                
                 <div>
                     <HorizontalParallax direction={1} speed={20}>
                         <h3 className="text-white font-bold text-xl mb-2 flex items-center gap-2">
@@ -226,7 +194,6 @@ export default function AgencePage() {
                     </HorizontalParallax>
                     <p>{t('engagement_text')}</p>
                 </div>
-
                 <div className="pt-4">
                     <div className="inline-flex items-center gap-4 px-6 py-3 border border-cyan-500/30 bg-cyan-500/5 rounded-full backdrop-blur-md">
                         <Trophy className="text-cyan-400" size={20} />
@@ -234,8 +201,6 @@ export default function AgencePage() {
                     </div>
                 </div>
             </div>
-
-            {/* TERMINAL */}
             <div className="w-full flex justify-center transform hover:scale-[1.02] transition-transform duration-500">
                 <CyberTerminal />
             </div>
@@ -249,7 +214,6 @@ export default function AgencePage() {
                     {t('logs_title')}
                 </h3>
             </HorizontalParallax>
-            
             <div className="relative border-l border-white/10 ml-4 md:ml-1/2 space-y-12">
                 {history.map((log, idx) => (
                     <div key={idx} className="relative pl-8 md:pl-12">
@@ -271,7 +235,6 @@ export default function AgencePage() {
             <HorizontalParallax direction={-1} speed={40}>
                 <h3 className="text-2xl md:text-5xl font-black text-white mb-16 text-center">{t('dna_title')} <span className="text-gray-500">{t('dna_subtitle')}</span></h3>
             </HorizontalParallax>
-            
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full md:h-[350px]">
                 {values.map((val, idx) => (
                     <SpotlightValueCard key={idx} value={val} index={idx} />
@@ -309,7 +272,6 @@ export default function AgencePage() {
                 </HorizontalParallax>
                 <p className="text-gray-500 text-sm font-mono">{t('operator_subtitle')}</p>
             </div>
-            
             <div className="max-w-4xl mx-auto">
                 {team.map((member, idx) => (
                     <motion.div 
@@ -321,29 +283,17 @@ export default function AgencePage() {
                         className="group relative bg-black/50 backdrop-blur-sm border border-white/10 rounded-3xl overflow-hidden hover:border-cyan-500/50 transition-colors"
                     >
                         <div className="h-1 bg-gradient-to-r from-cyan-500 to-blue-600 w-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                        
                         <div className="p-8 md:p-12 flex flex-col md:flex-row gap-10 items-center md:items-start">
-                            
                             <div className="relative w-32 h-32 md:w-48 md:h-48 shrink-0 rounded-2xl overflow-hidden border-2 border-white/10 group-hover:border-cyan-500/50 transition-colors">
                                 <div className="absolute inset-0 bg-gray-800 animate-pulse" />
-                                <Image 
-                                    src={member.image} 
-                                    alt={member.name}
-                                    fill
-                                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                                />
+                                <Image src={member.image} alt={member.name} fill className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
                             </div>
-
                             <div className="text-center md:text-left">
                                 <div className="mb-6">
                                     <h4 className="text-3xl md:text-4xl font-black text-white mb-2 uppercase">{member.name}</h4>
                                     <p className="text-sm text-cyan-400 font-mono tracking-widest">{member.role}</p>
                                 </div>
-                                
-                                <p className="text-base text-gray-300 mb-8 min-h-[80px] font-light leading-relaxed">
-                                    {member.bio}
-                                </p>
-                                
+                                <p className="text-base text-gray-300 mb-8 min-h-[80px] font-light leading-relaxed">{member.bio}</p>
                                 <div className="flex flex-wrap justify-center md:justify-start gap-4 bg-white/5 p-6 rounded-xl border border-white/5">
                                     {member.stats.map((stat, i) => (
                                         <div key={i} className="flex items-center gap-3 text-xs font-mono text-gray-400 bg-black/50 px-3 py-1 rounded">
@@ -368,13 +318,8 @@ export default function AgencePage() {
                 <HorizontalParallax direction={-1} speed={30}>
                     <h3 className="text-3xl font-black text-white mb-6">{t('cta_title')}</h3>
                 </HorizontalParallax>
-                <p className="text-gray-400 mb-8 leading-relaxed">
-                    {t('cta_desc')}
-                </p>
-                <Link 
-                    href="/contact" 
-                    className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-cyan-400 transition-all text-sm tracking-widest"
-                >
+                <p className="text-gray-400 mb-8 leading-relaxed">{t('cta_desc')}</p>
+                <Link href="/contact" className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-cyan-400 transition-all text-sm tracking-widest">
                     {t('cta_button')} <ChevronRight size={16} />
                 </Link>
             </div>

@@ -7,21 +7,14 @@ import * as THREE from 'three';
 
 function DataCloud() {
   const ref = useRef<THREE.Points>(null!);
-  
-  // Configuration stable pour éviter les recalculs inutiles
-  const particleCount = 2500; 
+  const particleCount = 3000; // J'ai légèrement augmenté pour la densité
 
   const particles = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
-    
-    // Fonction pseudo-aléatoire pour garantir la stabilité entre serveur et client
-    const random = (seed: number) => {
-      const x = Math.sin(seed) * 10000;
-      return x - Math.floor(x);
-    };
+    const random = (seed: number) => Math.sin(seed) * 10000 - Math.floor(Math.sin(seed) * 10000);
 
     for (let i = 0; i < particleCount; i++) {
-      const r = 4 * Math.cbrt(random(i));
+      const r = 5 * Math.cbrt(random(i)); // Rayon un peu plus large
       const theta = random(i + 1) * 2 * Math.PI;
       const phi = Math.acos(2 * random(i + 2) - 1);
       
@@ -34,8 +27,9 @@ function DataCloud() {
 
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.y = state.clock.getElapsedTime() * 0.05;
-      ref.current.rotation.x = state.clock.getElapsedTime() * 0.02;
+      // Rotation continue et douce
+      ref.current.rotation.y = state.clock.getElapsedTime() * 0.03;
+      ref.current.rotation.x = state.clock.getElapsedTime() * 0.01;
     }
   });
 
@@ -45,7 +39,7 @@ function DataCloud() {
         <PointMaterial 
             transparent 
             color="#00f3ff" 
-            size={0.015} 
+            size={0.02} // Un peu plus visible
             sizeAttenuation={true} 
             depthWrite={false} 
             blending={THREE.AdditiveBlending} 
@@ -58,24 +52,23 @@ function DataCloud() {
 export default function Background3D() {
   const [mounted, setMounted] = useState(false);
 
-  // CORRECTION FINALE : Utilisation de setTimeout pour rendre la mise à jour asynchrone
-  // Cela satisfait le Linter et évite l'erreur "synchronous setState".
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setMounted(true);
-    }, 0);
-    
+    const timer = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(timer);
   }, []);
 
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 z-0 opacity-60 pointer-events-none">
+    // CORRECTION MAJEURE ICI :
+    // 1. fixed inset-0 : Couvre tout l'écran et reste fixe au scroll
+    // 2. z-[-1] : Se place DERRIÈRE tout le contenu du site
+    // 3. bg-[#050505] : C'est LUI qui gère la couleur de fond du site maintenant
+    <div className="fixed inset-0 z-[-1] bg-[#050505] pointer-events-none">
       <Canvas 
         camera={{ position: [0, 0, 5], fov: 60 }}
         dpr={[1, 2]} 
-        gl={{ antialias: false }}
+        gl={{ antialias: false, alpha: true }} // Alpha true pour la transparence interne
       >
         <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
           <DataCloud />

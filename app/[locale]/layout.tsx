@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import Navbar from "@/app/components/ui/Navbar";
 import Footer from "@/app/components/ui/Footer";
 import "../globals.css";
+import Background3D from '@/app/components/3d/Background3D';
 
 export const metadata: Metadata = {
   title: "MazouzWS - Digital Forge",
@@ -41,14 +42,16 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={direction}>
-      <body className="bg-black text-white antialiased overflow-x-hidden">
-        suppressHydrationWarning={true}
-        <NextIntlClientProvider messages={messages} locale={locale}>
-          <Navbar />
-          {children}
-          <Footer />
-        </NextIntlClientProvider>
-      </body>
+      {/* On enlève bg-black et on ajoute bg-transparent */}
+<body className="bg-transparent text-white antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-black">
+    {/* Le Background3D est chargé ici pour être partout */}
+    <Background3D /> 
+    <NextIntlClientProvider messages={messages} locale={locale}>
+        <Navbar />
+        {children}
+        <Footer />
+    </NextIntlClientProvider>
+</body>
     </html>
   );
 }

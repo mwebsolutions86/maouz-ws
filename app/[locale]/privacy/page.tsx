@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Background3D from '@/app/components/3d/Background3D';
 import { HorizontalParallax } from '@/app/components/ui/Parallax';
 import { Shield, Lock, Eye, Database } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -10,12 +9,10 @@ export default function PrivacyPage() {
   const t = useTranslations('PrivacyPage');
 
   return (
-    <div className="relative min-h-screen bg-[#050505] text-white pt-28 md:pt-32 px-4 md:px-6 overflow-x-hidden selection:bg-cyan-500 selection:text-black">
-      <Background3D />
+    <div className="relative min-h-screen bg-transparent text-white pt-28 md:pt-32 px-4 md:px-6 overflow-x-hidden selection:bg-cyan-500 selection:text-black">
       
       <div className="max-w-4xl mx-auto relative z-10 pb-20">
         
-        {/* HEADER */}
         <div className="mb-16 md:mb-24 text-center">
             <HorizontalParallax direction={-1} speed={30}>
                 <h2 className="text-cyan-500 text-[10px] md:text-xs font-bold tracking-[0.3em] md:tracking-[0.5em] mb-4 uppercase">{t('subtitle')}</h2>
@@ -27,7 +24,6 @@ export default function PrivacyPage() {
             </HorizontalParallax>
         </div>
 
-        {/* CONTENU */}
         <div className="space-y-8">
             
             <section className="bg-white/[0.02] border border-white/10 p-8 rounded-3xl backdrop-blur-sm">
