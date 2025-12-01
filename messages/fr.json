@@ -179,8 +179,8 @@
     "custom_desc": "Pour les projets d'envergure (SaaS, Marketplaces complexes). Nous élaborons un cahier des charges précis.",
     "custom_btn": "DEMANDER UN DEVIS"
   },
-  "PortfolioPage": {
-    "subtitle": "DÉPLOIEMENTS RÉCENTS",
+"PortfolioPage": {
+    "subtitle": "LAB MWS",  
     "title": "SHOWCASE",
     "btn_explore": "EXPLORER",
     "category_prefix": "//",

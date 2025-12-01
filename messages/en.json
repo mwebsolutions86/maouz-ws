@@ -142,17 +142,17 @@
     "vision_card_3": "Direct Reactive Support (No tickets)",
     "vision_cta": "DISCUSS MY PROJECT"
   },
-  "PortfolioPage": {
-    "subtitle": "RECENT DEPLOYMENTS",
+ "PortfolioPage": {
+    "subtitle": "MWS LAB", 
     "title": "SHOWCASE",
     "btn_explore": "EXPLORE",
     "category_prefix": "//",
     "cta_github": "MORE PROJECTS ON GITHUB",
     "btn_github": "ACCESS REPO",
-    "project_1_desc": "The ultimate AI-driven fitness app. Real-time analysis.",
-    "project_2_desc": "Industrial drone piloting interface with zero-latency.",
-    "project_3_desc": "High-frequency trading dashboard.",
-    "project_4_desc": "Next-gen NFT marketplace."
+    "project_1_desc": "The ultimate AI-driven fitness app. Real-time biometric analysis and adaptive coaching.",
+    "project_2_desc": "Industrial drone piloting interface with zero-latency video feedback and 3D telemetry.",
+    "project_3_desc": "High-frequency trading dashboard. Real-time visualization of complex stock market data.",
+    "project_4_desc": "Next-gen NFT marketplace. Immersive and secure blockchain shopping experience."
   },
   "MethodePage": {
     "subtitle": "METHODOLOGY",
