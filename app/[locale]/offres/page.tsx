@@ -11,11 +11,11 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 
-// --- DÉFINITION DU TYPE (CORRIGÉE) ---
-// On rend 'setup' optionnel (?) pour que ça marche avec les offres d'acquisition qui n'en ont pas.
+// --- DÉFINITION DES TYPES ---
 interface OfferType {
   title: string;
-  price: string;
+  price: string;       // Le NOUVEAU prix
+  oldPrice?: string;   // L'ANCIEN prix (barré) - Optionnel
   period: string;
   desc: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,22 +23,49 @@ interface OfferType {
   features: string[];
   cta: string;
   highlight: boolean;
-  setup?: string; 
+  setup?: string;      // NOUVEAUX frais
+  oldSetup?: string;   // ANCIENS frais (barrés)
+  discountBadge?: string; // Badge "-50%" ou "PROMO"
 }
 
-// --- CONFIGURATION DES PRIX (Maroc vs Monde) ---
-const PRICING_TIERS = {
-  MA: { // MAROC
+// --- CONFIGURATION DES PRIX (AVEC PROMOS) ---
+type PriceValue = { new: string; old: string | null };
+
+interface PricingTier {
+  currency: string;
+  vitrine: PriceValue;
+  business: PriceValue;
+  ecommerce: PriceValue;
+  sub_start: string;
+  sub_growth: string;
+  sub_elite: string;
+  setup_start: PriceValue;
+  setup_growth: PriceValue;
+  setup_elite: PriceValue;
+}
+
+const PRICING_TIERS: { MA: PricingTier; EU: PricingTier } = {
+  MA: { // MAROC (PROMO CASSE-COÛT)
     currency: "DH",
-    vitrine: "1 750", business: "3 500", ecommerce: "DÈS 8 000",
-    sub_start: "250", sub_growth: "500", sub_elite: "900",
-    setup_start: "900", setup_growth: "1 500", setup_elite: "2 500"
+    // Acquisition : Grosses réductions affichées
+    vitrine: { new: "990", old: "1 750" }, 
+    business: { new: "2 490", old: "3 500" }, 
+    ecommerce: { new: "4 990", old: "8 000" },
+    // Abonnement : Mensuel stable + Frais d'entrée à -50%
+    sub_start: "199", sub_growth: "399", sub_elite: "799",
+    setup_start: { new: "450", old: "900" },    // -50%
+    setup_growth: { new: "750", old: "1 500" }, // -50%
+    setup_elite: { new: "1 250", old: "2 500" } // -50%
   },
-  EU: { // EUROPE / INTERNATIONAL
+  EU: { // INTERNATIONAL (PROMO AUSSI)
     currency: "€",
-    vitrine: "490", business: "990", ecommerce: "FROM 1 990",
-    sub_start: "49", sub_growth: "99", sub_elite: "199",
-    setup_start: "150", setup_growth: "250", setup_elite: "450"
+    vitrine: { new: "290", old: "490" }, 
+    business: { new: "690", old: "990" }, 
+    ecommerce: { new: "1 490", old: "1 990" },
+    sub_start: "29", sub_growth: "59", sub_elite: "129",
+    setup_start: { new: "75", old: "150" },   // -50%
+    setup_growth: { new: "125", old: "250" }, // -50%
+    setup_elite: { new: "225", old: "450" }   // -50%
   }
 };
 
@@ -46,14 +73,12 @@ export default function OffresPage() {
   const t = useTranslations('OffresPage');
   const [mode, setMode] = useState<'acquisition' | 'subscription'>('acquisition');
   
-  // État initial (Maroc par défaut pour éviter les erreurs d'hydratation)
-  const [pricing, setPricing] = useState(PRICING_TIERS.MA);
+  // État initial (Maroc par défaut)
+  const [pricing, setPricing] = useState<PricingTier>(PRICING_TIERS.MA);
 
-  // --- DÉTECTION INTELLIGENTE DE LA ZONE (CORRIGÉE) ---
+  // --- DÉTECTION ZONE (Correction bug React) ---
   useEffect(() => {
-    // Le setTimeout permet d'attendre que le composant soit monté pour éviter l'erreur "setState during render"
     const timer = setTimeout(() => {
-        // On vérifie d'abord s'il y a un cookie de préférence
         const getCookie = (name: string) => {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
@@ -66,7 +91,6 @@ export default function OffresPage() {
         } else if (savedRegion === 'MA') {
              setPricing(PRICING_TIERS.MA);
         } else {
-             // Sinon, détection automatique via fuseau horaire
              const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
              if (!timeZone.startsWith('Africa')) {
                  setPricing(PRICING_TIERS.EU);
@@ -76,15 +100,15 @@ export default function OffresPage() {
              }
         }
     }, 0);
-
     return () => clearTimeout(timer);
   }, []);
 
-  // --- DONNÉES DYNAMIQUES (Construction des tableaux) ---
+  // --- DONNÉES DYNAMIQUES ---
   const acquisitionData: OfferType[] = [
     {
       title: t('pack_vitrine_title'),
-      price: `${pricing.vitrine} ${pricing.currency}`,
+      price: `${pricing.vitrine.new} ${pricing.currency}`,
+      oldPrice: pricing.vitrine.old ? `${pricing.vitrine.old} ${pricing.currency}` : undefined,
       period: t('price_once'),
       desc: t('pack_vitrine_desc'),
       icon: Key,
@@ -94,7 +118,8 @@ export default function OffresPage() {
     },
     {
       title: t('pack_business_title'),
-      price: `${pricing.business} ${pricing.currency}`,
+      price: `${pricing.business.new} ${pricing.currency}`,
+      oldPrice: pricing.business.old ? `${pricing.business.old} ${pricing.currency}` : undefined,
       period: t('price_once'),
       desc: t('pack_business_desc'),
       icon: Key,
@@ -104,7 +129,8 @@ export default function OffresPage() {
     },
     {
       title: t('pack_ecommerce_title'),
-      price: `${pricing.ecommerce} ${pricing.currency}`,
+      price: `${pricing.ecommerce.new} ${pricing.currency}`,
+      oldPrice: pricing.ecommerce.old ? `${pricing.ecommerce.old} ${pricing.currency}` : undefined,
       period: t('price_once'),
       desc: t('pack_ecommerce_desc'),
       icon: Key,
@@ -117,7 +143,9 @@ export default function OffresPage() {
   const subscriptionData: OfferType[] = [
     {
       title: t('pack_sub_start_title'),
-      setup: `${pricing.setup_start} ${pricing.currency} (${t('setup_fee')})`,
+      setup: `${pricing.setup_start.new} ${pricing.currency}`,
+      oldSetup: pricing.setup_start.old ? `${pricing.setup_start.old} ${pricing.currency}` : undefined,
+      discountBadge: "-50%",
       price: `${pricing.sub_start} ${pricing.currency}`,
       period: t('price_month'),
       desc: t('pack_sub_start_desc'),
@@ -128,7 +156,9 @@ export default function OffresPage() {
     },
     {
       title: t('pack_sub_growth_title'),
-      setup: `${pricing.setup_growth} ${pricing.currency} (${t('setup_fee')})`,
+      setup: `${pricing.setup_growth.new} ${pricing.currency}`,
+      oldSetup: pricing.setup_growth.old ? `${pricing.setup_growth.old} ${pricing.currency}` : undefined,
+      discountBadge: "-50%",
       price: `${pricing.sub_growth} ${pricing.currency}`,
       period: t('price_month'),
       desc: t('pack_sub_growth_desc'),
@@ -139,7 +169,9 @@ export default function OffresPage() {
     },
     {
       title: t('pack_sub_elite_title'),
-      setup: `${pricing.setup_elite} ${pricing.currency} (${t('setup_fee')})`,
+      setup: `${pricing.setup_elite.new} ${pricing.currency}`,
+      oldSetup: pricing.setup_elite.old ? `${pricing.setup_elite.old} ${pricing.currency}` : undefined,
+      discountBadge: "-50%",
       price: `${pricing.sub_elite} ${pricing.currency}`,
       period: t('price_month'),
       desc: t('pack_sub_elite_desc'),
@@ -150,10 +182,8 @@ export default function OffresPage() {
     }
   ];
 
-  // Sélection des données selon le mode (Onglet)
   const currentData = mode === 'acquisition' ? acquisitionData : subscriptionData;
-
-  // Helpers pour les liens
+  
   const getWhatsAppLink = (offerTitle: string) => {
     return `https://wa.me/212664814768?text=${encodeURIComponent(`Bonjour, je suis intéressé par l'offre ${offerTitle} (Tarif: ${pricing.currency === '€' ? 'International' : 'Maroc'}).`)}`;
   };
@@ -161,10 +191,7 @@ export default function OffresPage() {
   const customQuoteLink = `https://wa.me/212664814768?text=${encodeURIComponent("Bonjour MazouzWS, j'ai un projet spécifique (Sur Mesure) et je souhaiterais un devis.")}`;
 
   return (
-    // CORRECTION : bg-transparent pour ne pas cacher le fond étoilé global
     <div className="relative min-h-screen bg-transparent text-white pt-28 md:pt-32 px-4 md:px-6 overflow-x-hidden selection:bg-cyan-500 selection:text-black">
-      
-      {/* Le Background3D est géré globalement dans le layout, on ne le remet pas ici */}
       
       <div className="max-w-7xl mx-auto relative z-10 pb-20">
         
@@ -181,7 +208,7 @@ export default function OffresPage() {
             </HorizontalParallax>
         </div>
 
-        {/* SWITCHER (ONGLETS) */}
+        {/* SWITCHER */}
         <div className="flex justify-center mb-16">
             <div className="bg-white/5 p-1 rounded-full border border-white/10 flex relative">
                 <motion.div 
@@ -220,10 +247,43 @@ export default function OffresPage() {
                                 <p className="text-gray-400 text-xs leading-relaxed min-h-[40px]">{offer.desc}</p>
                             </div>
 
-                            <div className="mb-8 text-center py-6 border-y border-white/5 bg-black/20 rounded-xl">
-                                {/* Correction : dir="ltr" pour l'affichage Arabe correct des chiffres */}
-                                {offer.setup && <div className="text-[10px] text-gray-500 font-mono mb-1" dir="ltr">{offer.setup}</div>}
-                                <div className="text-3xl md:text-4xl font-black text-white" dir="ltr">{offer.price}</div>
+                            <div className="mb-8 text-center py-6 border-y border-white/5 bg-black/20 rounded-xl relative">
+                                
+                                {/* GESTION FRAIS D'ENTRÉE (ABONNEMENT) */}
+                                {offer.setup && (
+                                    <div className="mb-2 flex flex-col items-center justify-center gap-1">
+                                        {/* Ancien prix barré (Setup) */}
+                                        {offer.oldSetup && (
+                                            <span className="text-[10px] text-red-400 line-through decoration-red-500/50 decoration-2 font-mono" dir="ltr">
+                                                {offer.oldSetup}
+                                            </span>
+                                        )}
+                                        
+                                        {/* Nouveau prix + Badge */}
+                                        <div className="flex items-center gap-2 justify-center">
+                                            <span className="text-[10px] text-gray-400 font-mono" dir="ltr">
+                                                {offer.setup} ({t('setup_fee')})
+                                            </span>
+                                            {offer.discountBadge && (
+                                                <span className="text-[8px] font-bold bg-green-500 text-black px-2 py-0.5 rounded-full animate-pulse">
+                                                    {offer.discountBadge}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* GESTION PRIX PRINCIPAL (ACQUISITION & ABO) */}
+                                <div className="flex flex-col items-center justify-center">
+                                    {/* Ancien prix barré (Principal) */}
+                                    {offer.oldPrice && (
+                                        <span className="text-sm text-gray-500 line-through decoration-red-500/80 decoration-2 font-bold mb-1" dir="ltr">
+                                            {offer.oldPrice}
+                                        </span>
+                                    )}
+                                    <div className="text-3xl md:text-4xl font-black text-white" dir="ltr">{offer.price}</div>
+                                </div>
+                                
                                 <div className="text-xs font-bold text-cyan-400 mt-1 tracking-wider">{offer.period}</div>
                             </div>
 
@@ -235,7 +295,6 @@ export default function OffresPage() {
                                     </li>
                                 ))}
                             </ul>
-
                             <a href={getWhatsAppLink(offer.title)} target="_blank" rel="noopener noreferrer" className={`w-full py-4 rounded-xl font-bold text-sm tracking-widest flex items-center justify-center gap-2 transition-all ${offer.highlight ? "bg-white text-black hover:bg-cyan-400 hover:scale-[1.02] shadow-lg" : "bg-white/5 text-white hover:bg-white hover:text-black border border-white/10"}`}>
                                 <MessageCircle size={18} /> {offer.cta}
                             </a>
@@ -245,7 +304,7 @@ export default function OffresPage() {
             </AnimatePresence>
         </div>
         
-        {/* PROTOCOLE FINANCIER */}
+        {/* RESTE DE LA PAGE (Protocole, Rassurance, Sur-Mesure) */}
         <div className="mb-32">
              <div className="text-center mb-12">
                  <HorizontalParallax direction={1} speed={20}>
@@ -256,7 +315,6 @@ export default function OffresPage() {
              </div>
 
              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                 {/* MODE PROJET */}
                  <div className="p-8 rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.02] to-transparent relative overflow-hidden">
                     <div className="absolute top-0 right-0 px-4 py-2 bg-white/5 text-[10px] font-bold text-gray-400 rounded-bl-2xl uppercase tracking-widest">Acquisition & Sur Mesure</div>
                     <h3 className="text-xl font-bold text-white mb-8 mt-4">ÉCHELONNEMENT STRATÉGIQUE</h3>
@@ -277,7 +335,6 @@ export default function OffresPage() {
                     </div>
                  </div>
 
-                 {/* MODE ABONNEMENT */}
                  <div className="p-8 rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.02] to-transparent relative overflow-hidden flex flex-col justify-center">
                     <div className="absolute top-0 right-0 px-4 py-2 bg-white/5 text-[10px] font-bold text-gray-400 rounded-bl-2xl uppercase tracking-widest">Mode Abonnement</div>
                     <h3 className="text-xl font-bold text-white mb-8 mt-4">ACTIVATION RAPIDE</h3>
@@ -290,7 +347,6 @@ export default function OffresPage() {
              </div>
         </div>
 
-        {/* RASSURANCE & SUR-MESURE */}
         <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-white/10 pt-12">
             <div className="flex gap-4 items-start"><ShieldCheck className="text-green-500 shrink-0" /><div><h4 className="font-bold text-white text-sm mb-1">{t('guarantee_title')}</h4><p className="text-xs text-gray-400">{t('guarantee_desc')}</p></div></div>
             <div className="flex gap-4 items-start"><Zap className="text-yellow-500 shrink-0" /><div><h4 className="font-bold text-white text-sm mb-1">{t('speed_title')}</h4><p className="text-xs text-gray-400">{t('speed_desc')}</p></div></div>
