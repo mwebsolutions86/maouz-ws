@@ -1,10 +1,10 @@
 {
-  "Navigation": {
+ "Navigation": {
     "agence": "الوكالة",
     "services": "الخدمات",
     "offres": "العروض",
     "methode": "المنهجية",
-    "portfolio": "أعمالنا",
+    "portfolio": "مختبر MWS", 
     "contact": "اتصل بنا"
   },
   "HomePage": {

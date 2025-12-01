@@ -1,10 +1,10 @@
 {
-  "Navigation": {
+"Navigation": {
     "agence": "L'AGENCE",
     "services": "SERVICES",
     "offres": "OFFRES",
     "methode": "MÉTHODE",
-    "portfolio": "PORTFOLIO",
+    "portfolio": "LAB MWS",  
     "contact": "CONTACT"
   },
   "HomePage": {
