@@ -347,7 +347,7 @@ export default function Home() {
                     <div className="absolute inset-0 bg-cyan-500/20 blur-[80px] md:blur-[120px] rounded-full" />
                     <div className="relative z-10 w-full max-w-[280px] md:max-w-[350px] h-[550px] md:h-[700px] bg-black border-[6px] md:border-[8px] border-[#1a1a1a] rounded-[2.5rem] md:rounded-[3rem] shadow-2xl overflow-hidden ring-1 ring-white/10 transform rotate-[-5deg] hover:rotate-0 transition-transform duration-700">
                         <div className="w-full h-full relative">
-                             <Image src="/dashboardW.jpeg" alt="Nexus App" fill className="object-cover opacity-90" unoptimized />
+                             <Image src="/dashboardW.webp" alt="Nexus App" fill className="object-cover opacity-90" unoptimized />
                              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
                         </div>
                     </div>
