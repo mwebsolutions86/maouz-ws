@@ -67,7 +67,7 @@ export default function ContactPage() {
                 <div className="space-y-4 md:space-y-6">
                     <div className="flex items-start gap-4 p-4 md:p-6 border border-white/5 rounded-2xl bg-white/[0.02]">
                         <div className="bg-cyan-500/10 p-2 md:p-3 rounded-lg"><Mail className="text-cyan-400" size={20} /></div>
-                        <div><h4 className="font-bold text-white text-[10px] md:text-sm tracking-widest mb-1">{t('direct_com')}</h4><a href="mailto:contact@mazouzws.com" className="text-gray-400 hover:text-cyan-400 transition-colors text-sm md:text-lg break-all">contact@mazouzws.com</a></div>
+                        <div><h4 className="font-bold text-white text-[10px] md:text-sm tracking-widest mb-1">{t('direct_com')}</h4><a href="mailto:mazouzwebsolutions@gmail.com" className="text-gray-400 hover:text-cyan-400 transition-colors text-sm md:text-lg break-all">mazouzwebsolutions@gmail.com</a></div>
                     </div>
                     <div className="flex items-start gap-4 p-4 md:p-6 border border-white/5 rounded-2xl bg-white/[0.02]">
                         <div className="bg-purple-500/10 p-2 md:p-3 rounded-lg"><MapPin className="text-purple-400" size={20} /></div>
