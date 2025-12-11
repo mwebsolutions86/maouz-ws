@@ -10,6 +10,9 @@ import Background3D from '@/app/components/3d/Background3D';
 export const metadata: Metadata = {
   title: "MazouzWS - Digital Forge",
   description: "Agence de développement web et mobile futuriste.",
+  icons: {
+    icon: '/logo.webp', // Chemin vers votre image dans public
+  },
 };
 
 export const viewport: Viewport = {
